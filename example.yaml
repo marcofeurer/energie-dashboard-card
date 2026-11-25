@@ -1,0 +1,72 @@
+# Beispiel-IDs durch Entitäts-IDs aus deinem Home Assistant ersetzen.
+type: custom:energie-dashboard-card
+entitaeten:
+  energie:
+    pv_gesamt: sensor.beispiel_energie_pv_gesamt
+    pv_e3dc: sensor.beispiel_energie_pv_e3dc
+    pv_fronius: sensor.beispiel_energie_pv_fronius
+    hausverbrauch: sensor.beispiel_energie_hausverbrauch
+    netzbezug: sensor.beispiel_energie_netzbezug
+    netzeinspeisung: sensor.beispiel_energie_netzeinspeisung
+    batterie_leistung: sensor.beispiel_energie_batterie_leistung
+    batterie_ladestand: sensor.beispiel_energie_batterie_ladestand
+    sauna_leistung: sensor.beispiel_energie_sauna_leistung
+    waermepumpe_leistung: sensor.beispiel_energie_waermepumpe_leistung
+    heizstab_leistung: sensor.beispiel_energie_heizstab_leistung
+    wallbox_leistung: sensor.beispiel_energie_wallbox_leistung
+    wallbox_laedt: binary_sensor.beispiel_energie_wallbox_laedt
+    autarkie: sensor.beispiel_energie_autarkie
+    eigenverbrauch: sensor.beispiel_energie_eigenverbrauch
+    stromkosten_heute: sensor.beispiel_energie_stromkosten_heute
+    einspeiseverguetung_heute: sensor.beispiel_energie_einspeiseverguetung_heute
+  garage:
+    tor_status: sensor.beispiel_garage_tor_status
+    tor_lueften: switch.beispiel_garage_tor_lueften
+    tor_auf_zu: switch.beispiel_garage_tor_auf_zu
+  untergeschoss:
+    treppe: light.beispiel_untergeschoss_treppe
+    waschkueche: light.beispiel_untergeschoss_waschkueche
+    luftschutzraum: light.beispiel_untergeschoss_luftschutzraum
+    technikraum: light.beispiel_untergeschoss_technikraum
+    sauna: light.beispiel_untergeschoss_sauna
+    safe: light.beispiel_untergeschoss_safe
+  erdgeschoss:
+    hauseingang: light.beispiel_erdgeschoss_hauseingang
+    kueche: light.beispiel_erdgeschoss_kueche
+    esszimmer_deckenleuchte: light.beispiel_erdgeschoss_esszimmer_deckenleuchte
+    esszimmer_bodenleuchte: switch.beispiel_erdgeschoss_esszimmer_bodenleuchte
+    wohnzimmer_stehlampe: light.beispiel_erdgeschoss_wohnzimmer_stehlampe
+    wohnzimmer_tischleuchte: switch.beispiel_erdgeschoss_wohnzimmer_tischleuchte
+    wohnzimmer_bodenleuchte: switch.beispiel_erdgeschoss_wohnzimmer_bodenleuchte
+  obergeschoss:
+    treppe_flur: light.beispiel_obergeschoss_treppe_flur
+    buero_deckenleuchte: light.beispiel_obergeschoss_buero_deckenleuchte
+    buero_fensterleuchte: switch.beispiel_obergeschoss_buero_fensterleuchte
+    buero_tischleuchte: switch.beispiel_obergeschoss_buero_tischleuchte
+    bad: light.beispiel_obergeschoss_bad
+    dusche_licht: light.beispiel_obergeschoss_dusche_licht
+    dusche_lueftung: switch.beispiel_obergeschoss_dusche_lueftung
+    schlafzimmer_fensterleuchte: switch.beispiel_obergeschoss_schlafzimmer_fensterleuchte
+    schlafzimmer_tischleuchte: switch.beispiel_obergeschoss_schlafzimmer_tischleuchte
+    gaestezimmer_fensterleuchte: light.beispiel_obergeschoss_gaestezimmer_fensterleuchte
+    gaestezimmer_tischleuchte: light.beispiel_obergeschoss_gaestezimmer_tischleuchte
+    terrassenzimmer_stehlampe: light.beispiel_obergeschoss_terrassenzimmer_stehlampe
+    terrassenzimmer_tischleuchte: light.beispiel_obergeschoss_terrassenzimmer_tischleuchte
+  anbau:
+    wintergarten_tischleuchte: switch.beispiel_anbau_wintergarten_tischleuchte
+    wintergarten_licht: light.beispiel_anbau_wintergarten_licht
+    garage_deckenleuchte: light.beispiel_anbau_garage_deckenleuchte
+    garage_licht: light.beispiel_anbau_garage_licht
+  geraete:
+    bewegungsmelder_treppe_flur: automation.beispiel_geraete_bewegungsmelder_treppe_flur
+    bewegungsmelder_kueche: automation.beispiel_geraete_bewegungsmelder_kueche
+    bewegungsmelder_buero: automation.beispiel_geraete_bewegungsmelder_buero
+    bewegungsmelder_gaestezimmer: automation.beispiel_geraete_bewegungsmelder_gaestezimmer
+    bewegungsmelder_terrassenzimmer: automation.beispiel_geraete_bewegungsmelder_terrassenzimmer
+    garage_entfeuchter: switch.beispiel_geraete_garage_entfeuchter
+    garage_lueftung: switch.beispiel_geraete_garage_lueftung
+    wintergarten_heizung: switch.beispiel_geraete_wintergarten_heizung
+    wintergarten_klimaanlage: switch.beispiel_geraete_wintergarten_klimaanlage
+    garage_durchgang_heizung: switch.beispiel_geraete_garage_durchgang_heizung
+  wetter:
+    vorhersage: weather.beispiel_wetter_vorhersage
