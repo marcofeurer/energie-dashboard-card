@@ -14,6 +14,10 @@ class DashboardCard extends HTMLElement {
     return {};
   }
 
+  static getConfigElement() {
+    return document.createElement(EDITOR_TYPE);
+  }
+
   setConfig(config) {
     const buttonConfig = structuredClone(BUTTON_CONFIG);
     applyEntityOverrides(buttonConfig.variables.entitaeten, config.entitaeten);
@@ -108,6 +112,258 @@ function applyEntityOverrides(entities, overrides) {
       }
       entities[group][key] = entityId;
     }
+  }
+}
+
+const EDITOR_GROUPS = {
+  energie: {
+    label: "Energie",
+    sections: {
+      "Photovoltaik und Netz": {
+        pv_gesamt: "PV-Leistung gesamt",
+        pv_e3dc: "PV-Leistung E3/DC",
+        pv_fronius: "PV-Leistung Fronius",
+        netzbezug: "Netzbezug",
+        netzeinspeisung: "Netzeinspeisung",
+      },
+      "Batterie": {
+        batterie_leistung: "Batterieleistung",
+        batterie_ladestand: "Batterieladestand",
+      },
+      "Verbraucher": {
+        hausverbrauch: "Hausverbrauch",
+        sauna_leistung: "Saunaleistung",
+        waermepumpe_leistung: "Wärmepumpenleistung",
+        heizstab_leistung: "Heizstableistung",
+        wallbox_leistung: "Wallbox-Leistung",
+        wallbox_laedt: "Wallbox lädt",
+      },
+      "Kennzahlen und Kosten": {
+        autarkie: "Autarkie",
+        eigenverbrauch: "Eigenverbrauch",
+        stromkosten_heute: "Stromkosten heute",
+        einspeiseverguetung_heute: "Einspeisevergütung heute",
+      },
+    },
+  },
+  wetter: {
+    label: "Wetter",
+    fields: { vorhersage: "Wettervorhersage" },
+  },
+  garage: {
+    label: "Garagentor",
+    fields: {
+      tor_status: "Torstatus",
+      tor_lueften: "Tor lüften",
+      tor_auf_zu: "Tor öffnen und schliessen",
+    },
+  },
+  untergeschoss: {
+    label: "Untergeschoss",
+    fields: {
+      treppe: "Treppe",
+      waschkueche: "Waschküche",
+      luftschutzraum: "Luftschutzraum",
+      technikraum: "Technikraum",
+      sauna: "Sauna",
+      safe: "Safe",
+    },
+  },
+  erdgeschoss: {
+    label: "Erdgeschoss",
+    fields: {
+      hauseingang: "Hauseingang",
+      kueche: "Küche",
+      esszimmer_deckenleuchte: "Esszimmer · Deckenleuchte",
+      esszimmer_bodenleuchte: "Esszimmer · Bodenleuchte",
+      wohnzimmer_stehlampe: "Wohnzimmer · Stehlampe",
+      wohnzimmer_tischleuchte: "Wohnzimmer · Tischleuchte",
+      wohnzimmer_bodenleuchte: "Wohnzimmer · Bodenleuchte",
+    },
+  },
+  obergeschoss: {
+    label: "Obergeschoss",
+    sections: {
+      "Treppe und Büro": {
+        treppe_flur: "Treppe und Flur",
+        buero_deckenleuchte: "Büro · Deckenleuchte",
+        buero_fensterleuchte: "Büro · Fensterleuchte",
+        buero_tischleuchte: "Büro · Tischleuchte",
+      },
+      "Bad und Dusche": {
+        bad: "Bad",
+        dusche_licht: "Dusche · Licht",
+        dusche_lueftung: "Dusche · Lüftung",
+      },
+      "Zimmer": {
+        schlafzimmer_fensterleuchte: "Schlafzimmer · Fensterleuchte",
+        schlafzimmer_tischleuchte: "Schlafzimmer · Tischleuchte",
+        gaestezimmer_fensterleuchte: "Gästezimmer · Fensterleuchte",
+        gaestezimmer_tischleuchte: "Gästezimmer · Tischleuchte",
+        terrassenzimmer_stehlampe: "Terrassenzimmer · Stehlampe",
+        terrassenzimmer_tischleuchte: "Terrassenzimmer · Tischleuchte",
+      },
+    },
+  },
+  anbau: {
+    label: "Anbau",
+    fields: {
+      wintergarten_tischleuchte: "Wintergarten · Tischleuchte",
+      wintergarten_licht: "Wintergarten · Licht",
+      garage_deckenleuchte: "Garage · Deckenleuchte",
+      garage_licht: "Garage · Licht",
+    },
+  },
+  geraete: {
+    label: "Geräte und Automationen",
+    sections: {
+      "Bewegungsmelder": {
+        bewegungsmelder_treppe_flur: "Treppe und Flur",
+        bewegungsmelder_kueche: "Küche",
+        bewegungsmelder_buero: "Büro",
+        bewegungsmelder_gaestezimmer: "Gästezimmer",
+        bewegungsmelder_terrassenzimmer: "Terrassenzimmer",
+      },
+      "Heizung, Lüftung und Entfeuchtung": {
+        garage_entfeuchter: "Garage · Entfeuchter",
+        garage_lueftung: "Garage · Lüftung",
+        wintergarten_heizung: "Wintergarten · Heizung",
+        wintergarten_klimaanlage: "Wintergarten · Klimaanlage",
+        garage_durchgang_heizung: "Garagendurchgang · Heizung",
+      },
+    },
+  },
+};
+
+const SUGGESTED_DOMAINS = {
+  sensor: ["sensor", "number", "input_number"],
+  binary_sensor: ["binary_sensor", "input_boolean", "switch", "sensor"],
+  light: ["light", "switch"],
+  switch: ["switch", "light", "input_boolean"],
+};
+
+class DashboardCardEditor extends HTMLElement {
+  constructor() {
+    super();
+    const root = this.attachShadow({ mode: "open" });
+    const defaults = BUTTON_CONFIG.variables.entitaeten;
+    root.innerHTML = `
+      <style>
+        :host { display: block; min-width: 0; }
+        details { margin: 0 0 12px; border: 1px solid var(--divider-color, #8195a3); border-radius: 8px; }
+        summary { padding: 12px; font-weight: 600; cursor: pointer; }
+        details[open] > summary { border-bottom: 1px solid var(--divider-color, #8195a3); }
+        .sections { display: grid; gap: 16px; padding: 12px; }
+        fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+        legend { padding: 0 0 8px; font-weight: 600; }
+        .fields { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr)); }
+        label { display: grid; align-content: start; gap: 6px; min-width: 0; }
+        input {
+          box-sizing: border-box;
+          width: 100%;
+          min-height: 40px;
+          padding: 8px 12px;
+          font: inherit;
+          color: inherit;
+          background: var(--card-background-color, transparent);
+          border: 1px solid var(--divider-color, #8195a3);
+          border-radius: 8px;
+        }
+        input:invalid { border-color: var(--error-color, #c23b4f); }
+      </style>
+      ${Object.entries(EDITOR_GROUPS).map(([group, { label, fields, sections }]) => `
+        <details data-group="${group}">
+          <summary>${label}</summary>
+          <div class="sections">
+            ${Object.entries(sections ?? { "": fields }).map(([title, entries]) => `
+              <fieldset${title ? "" : ` aria-label="${label}"`}>
+                ${title ? `<legend>${title}</legend>` : ""}
+                <div class="fields">
+                  ${Object.entries(entries).map(([key, name]) => {
+                    const domain = defaults[group][key].split(".")[0];
+                    return `<label>${name}<input name="${key}" data-group="${group}" list="ents-${domain}" pattern="[a-z0-9_]+[.][a-z0-9_]+" placeholder="Entität suchen" autocomplete="off"></label>`;
+                  }).join("")}
+                </div>
+              </fieldset>
+            `).join("")}
+          </div>
+        </details>
+      `).join("")}
+    `;
+    this._inputs = [...root.querySelectorAll("input")];
+    this._lists = new Map();
+    this._suggestionSignatures = new Map();
+    for (const input of this._inputs) {
+      const listId = input.getAttribute("list");
+      const domain = listId.slice("ents-".length);
+      if (!this._lists.has(domain)) {
+        const list = document.createElement("datalist");
+        list.id = listId;
+        root.append(list);
+        this._lists.set(domain, list);
+      }
+      input.addEventListener("change", () => this._changeEntity(input));
+    }
+  }
+
+  set hass(hass) {
+    const entities = new Map();
+    for (const [id, { attributes }] of Object.entries(hass?.states ?? {})) {
+      const domain = id.split(".")[0];
+      if (!entities.has(domain)) entities.set(domain, []);
+      entities.get(domain).push({ id, name: String(attributes?.friendly_name || id) });
+    }
+    for (const [domain, list] of this._lists) {
+      const domains = SUGGESTED_DOMAINS[domain] ?? [domain];
+      const matches = domains.flatMap(candidate => entities.get(candidate) ?? []);
+      const signature = JSON.stringify(matches);
+      if (this._suggestionSignatures.get(domain) === signature) continue;
+      this._suggestionSignatures.set(domain, signature);
+      const options = document.createDocumentFragment();
+      matches.sort((a, b) => a.name.localeCompare(b.name, "de", { numeric: true }));
+      for (const { id, name } of matches) {
+        const option = document.createElement("option");
+        option.value = id;
+        option.label = name;
+        options.append(option);
+      }
+      list.replaceChildren(options);
+    }
+  }
+
+  setConfig(config) {
+    applyEntityOverrides(structuredClone(BUTTON_CONFIG.variables.entitaeten), config.entitaeten);
+    this._config = config;
+    for (const input of this._inputs) {
+      const value = config.entitaeten?.[input.dataset.group]?.[input.name] ?? "";
+      if (input.value !== value) input.value = value;
+    }
+  }
+
+  _changeEntity(input) {
+    input.value = input.value.trim();
+    if (!input.reportValidity()) return;
+    const group = input.dataset.group;
+    const key = input.name;
+    const assigned = this._config.entitaeten ?? {};
+    const current = assigned[group] ?? {};
+    if (input.value === (current[key] ?? "")) return;
+
+    const updated = { ...current };
+    if (input.value) {
+      updated[key] = input.value;
+    } else {
+      delete updated[key];
+    }
+    const entitaeten = { ...assigned };
+    if (Object.keys(updated).length) {
+      entitaeten[group] = updated;
+    } else {
+      delete entitaeten[group];
+    }
+    const config = { ...this._config, entitaeten };
+    this.setConfig(config);
+    this.dispatchEvent(new CustomEvent("config-changed", { detail: { config }, bubbles: true, composed: true }));
   }
 }
 
@@ -2702,8 +2958,10 @@ const BUTTON_CONFIG = {
 };
 
 const CARD_TYPE = "energie-dashboard-card";
+const EDITOR_TYPE = `${CARD_TYPE}-editor`;
 
 if (!customElements.get(CARD_TYPE)) {
+  customElements.define(EDITOR_TYPE, DashboardCardEditor);
   customElements.define(CARD_TYPE, DashboardCard);
   window.customCards ??= [];
   window.customCards.push({
