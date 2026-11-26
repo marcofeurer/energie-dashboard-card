@@ -14,18 +14,13 @@ Die Karte verwendet bereits vorhandene Home-Assistant-Entitäten. Übersicht und
 1. Öffne **HACS → ⋮ → Benutzerdefinierte Repositorys**.
 2. Füge die GitHub-Adresse dieses Repositorys hinzu und wähle **Dashboard**.
 3. Öffne **Energie- und Hausübersicht** in HACS und wähle **Herunterladen**. Lade das Dashboard anschließend neu.
-4. Bearbeite dein Dashboard, füge eine **manuelle Karte** hinzu und übernimm [example.yaml](example.yaml). Ersetze die Beispiel-IDs durch deine Entitäts-IDs aus **Entwicklerwerkzeuge → Zustände**.
+4. Öffne **Dashboard bearbeiten → Karte hinzufügen** und wähle **Energie- und Hausübersicht**.
 
-Für eine erste Anzeige kannst du die primäre Entität zuordnen.
+## Entitäten visuell zuordnen
 
-```yaml
-type: custom:energie-dashboard-card
-entitaeten:
-  energie:
-    pv_gesamt: sensor.beispiel_energie_pv_gesamt
-```
+Öffne **Dashboard bearbeiten → Karte bearbeiten** und klappe die gewünschte Gruppe auf. Die Entitäten sind in **Energie**, **Wetter**, **Garagentor**, **Untergeschoss**, **Erdgeschoss**, **Obergeschoss**, **Anbau** sowie **Geräte und Automationen** gegliedert.
 
-Die übrigen Zuordnungen kannst du nach Bedarf aus [example.yaml](example.yaml) ergänzen. Ohne Zuordnung verwendet die Karte Platzhalter-IDs.
+Suche in den Feldern nach Anzeigenamen oder Entitäts-ID. Bereits gespeicherte Zuordnungen erscheinen im Editor. Wenn du ein Feld leerst, verwendet die Karte dort wieder ihre Platzhalter-ID. Du kannst dieselben Zuordnungen auch im YAML-Editor bearbeiten. [Beispielkonfiguration](example.yaml)
 
 Die Kartenbereiche für Garage, Stockwerke und Geräte verwenden die zugeordneten Schalter, Lichter und Automationen. Der Wetterbereich liest die zugeordnete `weather.*`-Entität. Die Anzeige der Kosten übernimmt das Währungsformat CHF aus der Vorlage.
 
