@@ -2079,7 +2079,6 @@ const BUTTON_CONFIG = {
           "browser_mod": {
             "service": "browser_mod.popup",
             "data": {
-              "browser_id": "THIS",
               "title": "Licht UG",
               "content": {
                 "type": "entities",
@@ -2177,7 +2176,6 @@ const BUTTON_CONFIG = {
           "browser_mod": {
             "service": "browser_mod.popup",
             "data": {
-              "browser_id": "THIS",
               "title": "Licht EG",
               "content": {
                 "type": "entities",
@@ -2280,7 +2278,6 @@ const BUTTON_CONFIG = {
           "browser_mod": {
             "service": "browser_mod.popup",
             "data": {
-              "browser_id": "THIS",
               "title": "Licht OG",
               "content": {
                 "type": "entities",
@@ -2413,7 +2410,6 @@ const BUTTON_CONFIG = {
           "browser_mod": {
             "service": "browser_mod.popup",
             "data": {
-              "browser_id": "THIS",
               "title": "Licht Anbau",
               "content": {
                 "type": "entities",
@@ -2501,7 +2497,6 @@ const BUTTON_CONFIG = {
           "browser_mod": {
             "service": "browser_mod.popup",
             "data": {
-              "browser_id": "THIS",
               "title": "Geräte",
               "content": {
                 "type": "entities",
