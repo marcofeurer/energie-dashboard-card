@@ -7,7 +7,7 @@ PV, Netz, Batterie, Hausverbrauch, Wetter und Haussteuerung in einer Lovelace-Ka
 ## Voraussetzungen
 
 - **Button Card** für die Darstellung und Bedienung, geprüft mit Version 7.0.1. [custom-cards/button-card](https://github.com/custom-cards/button-card)
-- **Browser Mod 2** für die Pop-ups. Nach der Installation muss die Integration in Home Assistant eingerichtet sein. [thomasloven/hass-browser_mod](https://github.com/thomasloven/hass-browser_mod)
+- **Browser Mod** für die Pop-ups, geprüft mit den Versionen 2.13.5 und 3.4.2. Nach der Installation muss die Integration in Home Assistant eingerichtet sein. [thomasloven/hass-browser_mod](https://github.com/thomasloven/hass-browser_mod)
 
 Die Karte verwendet bereits vorhandene Home-Assistant-Entitäten. Übersicht und Messwerte werden im Dashboard angezeigt, sobald die Entitäten zugeordnet sind.
 
